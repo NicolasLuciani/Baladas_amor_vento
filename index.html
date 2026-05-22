@@ -1,11 +1,556 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Balada de Amor ao Vento</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+      font-family: 'Trebuchet MS', sans-serif;
+    }
+
+    :root {
+      --bg: #0f172a;
+      --card: rgba(255,255,255,0.08);
+      --text: #f8fafc;
+      --primary: #ffb703;
+      --secondary: #fb8500;
+      --glass: rgba(255,255,255,0.1);
+      --border: rgba(255,255,255,0.15);
+    }
+
+    body {
+      background:
+        radial-gradient(circle at top left, rgba(255,183,3,0.15), transparent 30%),
+        radial-gradient(circle at bottom right, rgba(251,133,0,0.18), transparent 30%),
+        var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    .particles {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      overflow: hidden;
+    }
+
+    .particle {
+      position: absolute;
+      width: 5px;
+      height: 5px;
+      background: rgba(255,255,255,0.5);
+      border-radius: 50%;
+      animation: float 12s linear infinite;
+    }
+
+    @keyframes float {
+      from {
+        transform: translateY(100vh) scale(0);
+        opacity: 0;
+      }
+      20% {
+        opacity: 1;
+      }
+      to {
+        transform: translateY(-10vh) scale(1.5);
+        opacity: 0;
+      }
+    }
+
+    header {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+      position: relative;
+    }
+
+    .hero {
+      max-width: 1100px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .hero-text h1 {
+      font-size: 5rem;
+      line-height: 1;
+      margin-bottom: 20px;
+      background: linear-gradient(90deg, #fff, var(--primary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: fadeUp 1s ease;
+    }
+
+    .hero-text p {
+      font-size: 1.2rem;
+      line-height: 1.8;
+      opacity: 0.9;
+      margin-bottom: 30px;
+      animation: fadeUp 1.2s ease;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 15px 28px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.3s;
+      text-decoration: none;
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      box-shadow: 0 10px 30px rgba(255,183,3,0.3);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.3);
+      backdrop-filter: blur(10px);
+    }
+
+    .btn:hover {
+      transform: translateY(-4px) scale(1.03);
+    }
+
+    .book-card {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(18px);
+      padding: 30px;
+      border-radius: 30px;
+      transform: rotate(4deg);
+      transition: 0.4s;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+      animation: floatCard 5s ease-in-out infinite;
+    }
+
+    .book-card:hover {
+      transform: rotate(0deg) scale(1.02);
+    }
+
+    @keyframes floatCard {
+      0%,100% {
+        transform: translateY(0px) rotate(4deg);
+      }
+      50% {
+        transform: translateY(-15px) rotate(2deg);
+      }
+    }
+
+    .book-cover {
+      width: 100%;
+      height: 450px;
+      border-radius: 20px;
+      background:
+        linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.6)),
+        url('https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=1200&auto=format&fit=crop');
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      align-items: end;
+      padding: 25px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .book-cover::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(transparent, rgba(0,0,0,0.7));
+    }
+
+    .book-cover h2 {
+      position: relative;
+      z-index: 1;
+      font-size: 2rem;
+    }
+
+    section {
+      padding: 100px 10%;
+    }
+
+    .section-title {
+      font-size: 3rem;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .section-subtitle {
+      text-align: center;
+      opacity: 0.8;
+      max-width: 700px;
+      margin: auto;
+      margin-bottom: 60px;
+      line-height: 1.8;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 30px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 30px;
+      border-radius: 25px;
+      backdrop-filter: blur(14px);
+      transition: 0.4s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      background: rgba(255,183,3,0.1);
+      border-radius: 50%;
+      top: -100px;
+      right: -100px;
+    }
+
+    .card:hover {
+      transform: translateY(-10px);
+      border-color: rgba(255,183,3,0.4);
+    }
+
+    .card h3 {
+      margin-bottom: 15px;
+      font-size: 1.4rem;
+    }
+
+    .card p {
+      line-height: 1.7;
+      opacity: 0.9;
+    }
+
+    .timeline {
+      position: relative;
+      max-width: 900px;
+      margin: auto;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 0;
+      width: 4px;
+      height: 100%;
+      background: rgba(255,255,255,0.1);
+      transform: translateX(-50%);
+    }
+
+    .timeline-item {
+      width: 50%;
+      padding: 30px;
+      position: relative;
+    }
+
+    .timeline-item:nth-child(odd) {
+      left: 0;
+      text-align: right;
+    }
+
+    .timeline-item:nth-child(even) {
+      left: 50%;
+    }
+
+    .timeline-content {
+      background: var(--card);
+      padding: 25px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      backdrop-filter: blur(12px);
+    }
+
+    .timeline-content h3 {
+      color: var(--primary);
+      margin-bottom: 10px;
+    }
+
+    footer {
+      padding: 60px 20px;
+      text-align: center;
+      opacity: 0.8;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all 1s ease;
+    }
+
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media(max-width: 900px) {
+      .hero {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-text h1 {
+        font-size: 3.5rem;
+      }
+
+      .timeline::before {
+        left: 20px;
+      }
+
+      .timeline-item {
+        width: 100%;
+        padding-left: 60px;
+        padding-right: 0;
+        left: 0 !important;
+        text-align: left !important;
+      }
+    }
+  </style>
 </head>
 <body>
-    
+
+  <div class="particles" id="particles"></div>
+
+  <header>
+    <div class="hero">
+
+      <div class="hero-text">
+        <h1>Balada de Amor ao Vento</h1>
+
+        <p>
+          Um site conceitual inspirado no livro, trazendo emoções,
+          sentimentos e uma estética cinematográfica com animações,
+          efeitos modernos e uma atmosfera dramática.
+        </p>
+
+        <div class="hero-buttons">
+          <a href="#sobre" class="btn btn-primary">Explorar</a>
+          <a href="#personagens" class="btn btn-secondary">Personagens</a>
+        </div>
+      </div>
+
+      <div class="book-card">
+        <div class="book-cover">
+          <h2>Trabalho de Língua Portuguesa</h2>
+        </div>
+      </div>
+
+    </div>
+  </header>
+
+  <section id="sobre" class="reveal">
+    <h2 class="section-title">Sobre a Obra</h2>
+
+    <p class="section-subtitle">
+      Este projeto apresenta uma experiência visual inspirada na narrativa
+      do livro, utilizando design moderno, efeitos em glassmorphism,
+      animações suaves e um estilo artístico cinematográfico.
+    </p>
+
+    <div class="cards">
+
+      <div class="card">
+        <h3>📖 Enredo</h3>
+        <p>
+          O site pode ser usado para resumir a história principal,
+          explicar os acontecimentos e apresentar os conflitos centrais.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>🎭 Emoções</h3>
+        <p>
+          A identidade visual busca transmitir sentimentos fortes,
+          misturando romance, drama e intensidade.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>🎨 Estética</h3>
+        <p>
+          Inspirado em interfaces modernas com aparência artística,
+          animações e profundidade visual.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <section id="personagens" class="reveal">
+    <h2 class="section-title">Personagens</h2>
+
+    <p class="section-subtitle">
+      Você pode substituir estas informações pelos personagens reais do livro.
+    </p>
+
+    <div class="cards">
+
+      <div class="card">
+        <h3>👤 Personagem 1</h3>
+        <p>
+          Descreva a personalidade, importância na história e os conflitos.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>👤 Personagem 2</h3>
+        <p>
+          Explique a relação com os outros personagens e seu desenvolvimento.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>👤 Personagem 3</h3>
+        <p>
+          Fale sobre os sentimentos, motivações e impacto no enredo.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="reveal">
+    <h2 class="section-title">Linha do Tempo</h2>
+
+    <div class="timeline">
+
+      <div class="timeline-item">
+        <div class="timeline-content">
+          <h3>Início</h3>
+          <p>
+            Introdução dos personagens e do contexto principal da narrativa.
+          </p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-content">
+          <h3>Conflito</h3>
+          <p>
+            Desenvolvimento dos problemas emocionais e desafios enfrentados.
+          </p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-content">
+          <h3>Clímax</h3>
+          <p>
+            Momento de maior tensão e intensidade da história.
+          </p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-content">
+          <h3>Final</h3>
+          <p>
+            Encerramento da narrativa e consequências dos acontecimentos.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <footer>
+    <p>
+      Projeto desenvolvido para trabalho escolar • Língua Portuguesa
+    </p>
+  </footer>
+
+  <script>
+    // Partículas
+    const particlesContainer = document.getElementById('particles');
+
+    for(let i = 0; i < 45; i++) {
+      const particle = document.createElement('div');
+      particle.classList.add('particle');
+
+      particle.style.left = Math.random() * 100 + 'vw';
+      particle.style.animationDuration = (Math.random() * 10 + 5) + 's';
+      particle.style.animationDelay = Math.random() * 5 + 's';
+      particle.style.opacity = Math.random();
+
+      particlesContainer.appendChild(particle);
+    }
+
+    // Reveal animation
+    const reveals = document.querySelectorAll('.reveal');
+
+    function revealOnScroll() {
+      reveals.forEach(reveal => {
+        const windowHeight = window.innerHeight;
+        const revealTop = reveal.getBoundingClientRect().top;
+        const revealPoint = 100;
+
+        if(revealTop < windowHeight - revealPoint) {
+          reveal.classList.add('active');
+        }
+      });
+    }
+
+    window.addEventListener('scroll', revealOnScroll);
+    revealOnScroll();
+
+    // Cursor glow
+    const glow = document.createElement('div');
+    glow.style.position = 'fixed';
+    glow.style.width = '250px';
+    glow.style.height = '250px';
+    glow.style.borderRadius = '50%';
+    glow.style.pointerEvents = 'none';
+    glow.style.background = 'radial-gradient(circle, rgba(255,183,3,0.15), transparent 70%)';
+    glow.style.transform = 'translate(-50%, -50%)';
+    glow.style.zIndex = '-1';
+
+    document.body.appendChild(glow);
+
+    document.addEventListener('mousemove', (e) => {
+      glow.style.left = e.clientX + 'px';
+      glow.style.top = e.clientY + 'px';
+    });
+  </script>
+
 </body>
 </html>
