@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quem sou eu? · Balada de Amor ao Vento</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg:    #0b0a08;
+      --ouro:  #c9a227;
+      --areia: #c8b89a;
+      --perg:  #e8dcc8;
+      --cinza: #4a4540;
+      --borda: rgba(201,162,39,0.2);
+    }
+
+    html, body {
+      width: 100%; height: 100%;
+      overflow: hidden;
+      background: var(--bg);
+      font-family: 'Cormorant Garamond', serif;
+      color: var(--areia);
+    }
+
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 0;
+    }
+
+    body::after {
+      content: '';
+      position: fixed; inset: 0;
+      background:
+        linear-gradient(var(--borda) 1px, transparent 1px),
+        linear-gradient(90deg, var(--borda) 1px, transparent 1px);
+      background-size: 70px 70px;
+      opacity: 0.25;
+      pointer-events: none; z-index: 0;
+    }
+
+    #particles { position: fixed; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; }
+    .pt {
+      position: absolute; background: var(--areia); border-radius: 50%; opacity: 0;
+      animation: drift linear infinite;
+    }
+    @keyframes drift {
+      0%   { opacity: 0; transform: translateX(0); }
+      10%  { opacity: 0.1; }
+      90%  { opacity: 0.03; }
+      100% { opacity: 0; transform: translateX(110vw) translateY(-60px); }
+    }
+
+    .vinheta {
+      position: fixed; inset: 0; z-index: 2;
+      background: radial-gradient(ellipse at center, transparent 35%, rgba(11,10,8,0.85) 100%);
+      pointer-events: none;
+    }
+
+    .voltar {
+      position: fixed; top: 2rem; left: 2.5rem; z-index: 5;
+      font-family: 'IM Fell English', serif; font-style: italic;
+      font-size: 0.78rem; letter-spacing: 0.2em;
+      color: var(--cinza); text-decoration: none;
+      display: flex; align-items: center; gap: 0.5rem;
+      transition: color 0.3s;
+    }
+    .voltar:hover { color: var(--areia); }
+    .voltar:hover svg { transform: translateX(-3px); }
+    .voltar svg { transition: transform 0.3s; }
+
+    /* PROGRESSO */
+    .progresso-wrap {
+      position: fixed; top: 2rem; left: 50%;
+      transform: translateX(-50%);
+      z-index: 5;
+      display: flex; flex-direction: column; align-items: center; gap: 0.6rem;
+    }
+
+    .progresso-label {
+      font-family: 'IM Fell English', serif; font-style: italic;
+      font-size: 0.72rem; letter-spacing: 0.3em; color: var(--cinza);
+    }
+
+    .progresso-pontos {
+      display: flex; gap: 6px;
+    }
+
+    .ponto {
+      width: 28px; height: 3px;
+      background: rgba(201,162,39,0.15);
+      transition: background 0.4s;
+    }
+
+    .ponto.ativo    { background: var(--ouro); }
+    .ponto.passado  { background: rgba(201,162,39,0.4); }
+
+    /* MAIN */
+    main {
+      position: relative; z-index: 3;
+      width: 100vw; height: 100vh;
+      display: flex; flex-direction: column;
+      justify-content: center; align-items: center;
+      text-align: center; padding: 2rem;
+    }
+
+    /* ÍCONE INTERROGAÇÃO */
+    .icone-wrap {
+      position: relative;
+      width: 90px; height: 90px;
+      margin-bottom: 2rem;
+      transition: transform 0.5s;
+    }
+
+    .icone-circulo {
+      width: 90px; height: 90px;
+      border: 1.5px solid rgba(201,162,39,0.35);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(201,162,39,0.04);
+      animation: pulsar 3s ease-in-out infinite;
+    }
+
+    @keyframes pulsar {
+      0%,100% { box-shadow: 0 0 0 0 rgba(201,162,39,0); }
+      50%      { box-shadow: 0 0 0 10px rgba(201,162,39,0.06); }
+    }
+
+    .icone-circulo svg {
+      color: var(--ouro);
+      transition: opacity 0.4s;
+    }
+
+    /* CONTADOR */
+    .dica-label {
+      font-family: 'IM Fell English', serif; font-style: italic;
+      font-size: 0.78rem; letter-spacing: 0.4em; text-transform: uppercase;
+      color: var(--ouro); margin-bottom: 1rem;
+    }
+
+    /* DICA */
+    .dica-texto {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: clamp(1.3rem, 2.8vw, 2rem);
+      color: var(--perg);
+      line-height: 1.35;
+      max-width: 620px;
+      margin-bottom: 1.5rem;
+      min-height: 3em;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    /* DICAS JÁ REVELADAS */
+    .dicas-anteriores {
+      display: flex; flex-direction: column; gap: 0.5rem;
+      margin-bottom: 1.8rem;
+      max-width: 540px;
+      width: 100%;
+    }
+
+    .dica-passada {
+      font-family: 'IM Fell English', serif; font-style: italic;
+      font-size: 0.9rem; color: var(--cinza);
+      border-left: 2px solid rgba(201,162,39,0.2);
+      padding: 0.3rem 0.8rem;
+      text-align: left;
+      opacity: 0;
+      animation: sobir 0.5s forwards;
+    }
+
+    /* BOTÕES */
+    .btns {
+      display: flex; gap: 1rem; align-items: center;
+    }
+
+    .btn-avancar {
+      display: inline-flex; align-items: center; gap: 0.7rem;
+      padding: 0.9rem 2.4rem;
+      background: var(--ouro); color: #0b0a08;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.82rem; font-weight: 700;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      border: none; cursor: pointer;
+      transition: transform 0.3s, box-shadow 0.3s;
+      box-shadow: 0 8px 24px rgba(201,162,39,0.25);
+    }
+
+    .btn-avancar:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 32px rgba(201,162,39,0.4);
+    }
+
+    .btn-avancar svg { transition: transform 0.3s; }
+    .btn-avancar:hover svg { transform: translateX(4px); }
+
+    .btn-revelar {
+      display: none;
+      align-items: center; gap: 0.7rem;
+      padding: 0.9rem 2.4rem;
+      background: transparent; color: var(--ouro);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.82rem; font-weight: 700;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      border: 1.5px solid rgba(201,162,39,0.4); cursor: pointer;
+      transition: transform 0.3s, border-color 0.3s, background 0.3s;
+    }
+
+    .btn-revelar.visivel { display: inline-flex; }
+
+    .btn-revelar:hover {
+      transform: translateY(-3px);
+      border-color: rgba(201,162,39,0.8);
+      background: rgba(201,162,39,0.05);
+    }
+
+    /* TELA DE REVELAÇÃO */
+    #tela-reveal {
+      display: none;
+      position: fixed; inset: 0; z-index: 6;
+      flex-direction: column; justify-content: center; align-items: center;
+      text-align: center; padding: 2rem;
+      background: var(--bg);
+    }
+
+    #tela-reveal.ativa { display: flex; }
+
+    .reveal-pre {
+      font-family: 'IM Fell English', serif; font-style: italic;
+      font-size: 0.78rem; letter-spacing: 0.4em; text-transform: uppercase;
+      color: var(--ouro); margin-bottom: 1rem;
+      animation: sobir 0.6s 0.1s both;
+    }
+
+    /* Avatar do personagem */
+    .avatar {
+      width: 100px; height: 100px;
+      border: 1.5px solid var(--ouro);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 1.5rem;
+      background: rgba(201,162,39,0.06);
+      animation: sobir 0.6s 0.2s both;
+    }
+
+    .avatar-inicial {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.8rem; font-weight: 900; font-style: italic;
+      color: var(--ouro);
+    }
+
+    .reveal-nome {
+      font-family: 'Playfair Display', serif;
+      font-weight: 900; font-style: italic;
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      color: var(--perg); line-height: 1;
+      margin-bottom: 0.5rem;
+      animation: sobir 0.7s 0.3s both;
+    }
+
+    .reveal-sub {
+      font-family: 'IM Fell English', serif; font-style: italic;
+      font-size: 1rem; color: var(--cinza);
+      margin-bottom: 2rem;
+      animation: sobir 0.7s 0.5s both;
+    }
+
+    .ornamento-reveal {
+      display: flex; align-items: center; gap: 1rem;
+      margin-bottom: 2.5rem;
+      animation: sobir 0.7s 0.4s both;
+    }
+
+    .ornamento-reveal span {
+      display: block; height: 1px; width: 60px;
+      background: linear-gradient(90deg, transparent, var(--ouro), transparent);
+    }
+
+    .reveal-btns {
+      display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;
+      animation: sobir 0.7s 0.7s both;
+    }
+
+    .btn-final {
+      display: inline-flex; align-items: center; gap: 0.7rem;
+      padding: 0.9rem 2rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.82rem; font-weight: 700;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      border: none; cursor: pointer; text-decoration: none;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .btn-final-prim {
+      background: var(--ouro); color: #0b0a08;
+      box-shadow: 0 8px 24px rgba(201,162,39,0.25);
+    }
+
+    .btn-final-prim:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(201,162,39,0.4); }
+
+    .btn-final-sec {
+      background: transparent; color: var(--areia);
+      border: 1px solid rgba(201,162,39,0.3);
+    }
+
+    .btn-final-sec:hover { transform: translateY(-3px); border-color: rgba(201,162,39,0.6); }
+
+    @keyframes sobir {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes trocar {
+      0%   { opacity: 0; transform: translateY(10px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    .dica-texto.animando {
+      animation: trocar 0.4s forwards;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="particles"></div>
+  <div class="vinheta"></div>
+
+  <a href="escolha.html" class="voltar">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+      <path d="M13 8H3M7 4L3 8l4 4"/>
+    </svg>
+    voltar
+  </a>
+
+  <div class="progresso-wrap">
+    <div class="progresso-label" id="prog-label">Dica 1 de 5</div>
+    <div class="progresso-pontos" id="prog-pontos"></div>
+  </div>
+
+  <main>
+    <div class="icone-wrap">
+      <div class="icone-circulo">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+          <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M12 17h.01"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="dica-label" id="dica-label">Dica 01</div>
+    <div class="dicas-anteriores" id="dicas-anteriores"></div>
+    <div class="dica-texto" id="dica-texto"></div>
+
+    <div class="btns">
+      <button class="btn-avancar" id="btn-avancar">
+        Próxima dica
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M3 8h10M9 4l4 4-4 4"/>
+        </svg>
+      </button>
+      <button class="btn-revelar" id="btn-revelar">
+        Revelar personagem
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M3 8h10M9 4l4 4-4 4"/>
+        </svg>
+      </button>
+    </div>
+  </main>
+
+  <!-- TELA DE REVELAÇÃO -->
+  <div id="tela-reveal">
+    <div class="reveal-pre">O personagem era...</div>
+    <div class="avatar">
+      <span class="avatar-inicial" id="avatar-inicial">?</span>
+    </div>
+    <div class="reveal-nome" id="reveal-nome">Nome</div>
+    <div class="ornamento-reveal">
+      <span></span>
+      <svg width="12" height="12" viewBox="0 0 16 16" fill="#c9a227"><path d="M8 0L9.5 6.5L16 8L9.5 9.5L8 16L6.5 9.5L0 8L6.5 6.5L8 0Z"/></svg>
+      <span></span>
+    </div>
+    <div class="reveal-sub" id="reveal-sub"></div>
+    <div class="reveal-btns">
+      <button class="btn-final btn-final-prim" onclick="reiniciar()">Jogar novamente</button>
+      <a href="escolha.html" class="btn-final btn-final-sec">Voltar ao início</a>
+    </div>
+  </div>
+
+  <script>
+    // =============================================
+    // PERSONAGENS — substitua pelo conteúdo real
+    // =============================================
+    const personagens = [
+      {
+        nome: "Personagem Teste",
+        descricao: "Personagem principal da história",
+        dicas: [
+          "Sou uma figura central na narrativa.",
+          "Carrego um segredo que muda tudo.",
+          "Minha relação com o vento é simbólica.",
+          "Enfrento conflitos entre tradição e liberdade.",
+          "Meu nome começa com a letra P."
+        ]
+      }
+    ];
+
+    // =============================================
+    // LÓGICA
+    // =============================================
+    let dicaAtual = 0;
+    let personagemIdx = 0;
+    const TOTAL_DICAS = 5;
+
+    const elLabel     = document.getElementById('dica-label');
+    const elTexto     = document.getElementById('dica-texto');
+    const elAntes     = document.getElementById('dicas-anteriores');
+    const elAvancar   = document.getElementById('btn-avancar');
+    const elRevelar   = document.getElementById('btn-revelar');
+    const elProgLabel = document.getElementById('prog-label');
+    const elProgPontos= document.getElementById('prog-pontos');
+
+    function iniciar() {
+      dicaAtual = 0;
+      elAntes.innerHTML = '';
+      renderPontos();
+      mostrarDica();
+    }
+
+    function renderPontos() {
+      elProgPontos.innerHTML = '';
+      for (let i = 0; i < TOTAL_DICAS; i++) {
+        const d = document.createElement('div');
+        d.className = 'ponto' +
+          (i === dicaAtual ? ' ativo' : i < dicaAtual ? ' passado' : '');
+        elProgPontos.appendChild(d);
+      }
+    }
+
+    function mostrarDica() {
+      const p = personagens[personagemIdx];
+
+      elProgLabel.textContent = `Dica ${dicaAtual + 1} de ${TOTAL_DICAS}`;
+      elLabel.textContent     = `Dica ${String(dicaAtual + 1).padStart(2,'0')}`;
+
+      elTexto.classList.remove('animando');
+      void elTexto.offsetWidth;
+      elTexto.classList.add('animando');
+      elTexto.textContent = p.dicas[dicaAtual];
+
+      renderPontos();
+
+      const isUltima = dicaAtual === TOTAL_DICAS - 1;
+      elAvancar.style.display  = isUltima ? 'none' : 'inline-flex';
+      elRevelar.className      = isUltima ? 'btn-revelar visivel' : 'btn-revelar';
+    }
+
+    elAvancar.addEventListener('click', () => {
+      if (dicaAtual < TOTAL_DICAS - 1) {
+        // Move dica atual para "anteriores"
+        const p = personagens[personagemIdx];
+        const el = document.createElement('div');
+        el.className = 'dica-passada';
+        el.textContent = `${dicaAtual + 1}. ${p.dicas[dicaAtual]}`;
+        elAntes.appendChild(el);
+
+        dicaAtual++;
+        mostrarDica();
+      }
+    });
+
+    elRevelar.addEventListener('click', () => {
+      const p = personagens[personagemIdx];
+      document.getElementById('reveal-nome').textContent    = p.nome;
+      document.getElementById('reveal-sub').textContent     = p.descricao;
+      document.getElementById('avatar-inicial').textContent = p.nome.charAt(0);
+      document.getElementById('tela-reveal').classList.add('ativa');
+    });
+
+    function reiniciar() {
+      document.getElementById('tela-reveal').classList.remove('ativa');
+      iniciar();
+    }
+
+    // Partículas
+    const c = document.getElementById('particles');
+    for (let i = 0; i < 25; i++) {
+      const p = document.createElement('div');
+      p.className = 'pt';
+      const s = Math.random() * 2 + 0.5;
+      p.style.cssText = `width:${s}px;height:${s}px;top:${Math.random()*100}vh;left:-8px;animation-duration:${Math.random()*18+10}s;animation-delay:${Math.random()*15}s;`;
+      c.appendChild(p);
+    }
+
+    iniciar();
+  </script>
+</body>
+</html>

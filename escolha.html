@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Escolha · Balada de Amor ao Vento</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg:    #0b0a08;
+      --ouro:  #c9a227;
+      --areia: #c8b89a;
+      --perg:  #e8dcc8;
+      --cinza: #4a4540;
+      --borda: rgba(201,162,39,0.2);
+    }
+
+    html, body {
+      width: 100%; height: 100%;
+      overflow: hidden;
+      background: var(--bg);
+      font-family: 'Cormorant Garamond', serif;
+      color: var(--areia);
+    }
+
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 0;
+    }
+
+    body::after {
+      content: '';
+      position: fixed; inset: 0;
+      background:
+        linear-gradient(var(--borda) 1px, transparent 1px),
+        linear-gradient(90deg, var(--borda) 1px, transparent 1px);
+      background-size: 70px 70px;
+      opacity: 0.25;
+      pointer-events: none; z-index: 0;
+    }
+
+    #particles { position: fixed; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; }
+
+    .pt {
+      position: absolute;
+      background: var(--areia);
+      border-radius: 50%;
+      opacity: 0;
+      animation: drift linear infinite;
+    }
+
+    @keyframes drift {
+      0%   { transform: translateX(0) translateY(0); opacity: 0; }
+      10%  { opacity: 0.12; }
+      90%  { opacity: 0.04; }
+      100% { transform: translateX(110vw) translateY(-60px); opacity: 0; }
+    }
+
+    .vinheta {
+      position: fixed; inset: 0; z-index: 2;
+      background: radial-gradient(ellipse at center, transparent 35%, rgba(11,10,8,0.85) 100%);
+      pointer-events: none;
+    }
+
+    main {
+      position: relative; z-index: 3;
+      width: 100vw; height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .pre-titulo {
+      font-family: 'IM Fell English', serif;
+      font-style: italic;
+      font-size: 0.78rem;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--ouro);
+      margin-bottom: 1rem;
+      opacity: 0;
+      animation: sobir 0.8s 0.2s forwards;
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      font-size: clamp(1.8rem, 3.5vw, 3rem);
+      color: var(--perg);
+      line-height: 1.1;
+      margin-bottom: 0.4rem;
+      opacity: 0;
+      animation: sobir 0.8s 0.4s forwards;
+    }
+
+    .subtitulo {
+      font-family: 'IM Fell English', serif;
+      font-style: italic;
+      font-size: clamp(0.9rem, 1.2vw, 1rem);
+      color: var(--cinza);
+      margin-bottom: 3.5rem;
+      opacity: 0;
+      animation: sobir 0.8s 0.6s forwards;
+    }
+
+    .opcoes {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+      opacity: 0;
+      animation: sobir 0.9s 0.9s forwards;
+    }
+
+    .opcao {
+      width: 300px;
+      border: 1px solid rgba(201,162,39,0.2);
+      padding: 3.5rem 2.5rem;
+      background: rgba(255,255,255,0.03);
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.2rem;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.4s, transform 0.4s, background 0.4s;
+      cursor: pointer;
+    }
+
+    .opcao::before {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 0;
+      background: linear-gradient(to top, rgba(201,162,39,0.07), transparent);
+      transition: height 0.4s;
+    }
+
+    .opcao:hover {
+      border-color: rgba(201,162,39,0.55);
+      transform: translateY(-6px);
+      background: rgba(201,162,39,0.04);
+    }
+
+    .opcao:hover::before { height: 100%; }
+
+    .icone {
+      width: 64px; height: 64px;
+      border: 1px solid rgba(201,162,39,0.3);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      transition: border-color 0.4s;
+      margin-bottom: 0.4rem;
+    }
+
+    .opcao:hover .icone { border-color: rgba(201,162,39,0.7); }
+    .icone svg { color: var(--ouro); }
+
+    .opcao-titulo {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: 1.35rem;
+      color: var(--perg);
+      line-height: 1.25;
+    }
+
+    .opcao-label {
+      font-family: 'IM Fell English', serif;
+      font-style: italic;
+      font-size: 0.72rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--ouro);
+      opacity: 0.5;
+      display: flex; align-items: center; gap: 0.5rem;
+      margin-top: 0.4rem;
+      transition: opacity 0.3s, gap 0.3s;
+    }
+
+    .opcao:hover .opcao-label { opacity: 1; gap: 0.9rem; }
+    .opcao-label svg { transition: transform 0.3s; }
+    .opcao:hover .opcao-label svg { transform: translateX(3px); }
+
+    .divisor-vertical {
+      width: 1px;
+      height: 160px;
+      background: linear-gradient(to bottom, transparent, var(--cinza), transparent);
+      opacity: 0.35;
+    }
+
+    .voltar {
+      position: fixed;
+      top: 2rem; left: 2.5rem;
+      z-index: 4;
+      font-family: 'IM Fell English', serif;
+      font-style: italic;
+      font-size: 0.78rem;
+      letter-spacing: 0.2em;
+      color: var(--cinza);
+      text-decoration: none;
+      display: flex; align-items: center; gap: 0.5rem;
+      transition: color 0.3s;
+      opacity: 0;
+      animation: aparecer 1s 1.2s forwards;
+    }
+
+    .voltar:hover { color: var(--areia); }
+    .voltar:hover svg { transform: translateX(-3px); }
+    .voltar svg { transition: transform 0.3s; }
+
+    .autora {
+      position: fixed;
+      bottom: 2rem; left: 50%;
+      transform: translateX(-50%);
+      z-index: 4;
+      font-family: 'IM Fell English', serif;
+      font-style: italic;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      color: var(--cinza);
+      display: flex; align-items: center; gap: 0.8rem;
+      white-space: nowrap;
+      opacity: 0;
+      animation: aparecer 1s 1.5s forwards;
+    }
+
+    .autora span {
+      display: block; height: 1px; width: 36px;
+      background: linear-gradient(90deg, transparent, var(--cinza));
+    }
+    .autora span:last-child {
+      background: linear-gradient(90deg, var(--cinza), transparent);
+    }
+
+    @keyframes sobir {
+      from { opacity: 0; transform: translateY(22px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes aparecer {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    @media (max-width: 640px) {
+      .opcoes { flex-direction: column; gap: 1.2rem; }
+      .divisor-vertical { display: none; }
+      .opcao { width: 100%; max-width: 320px; padding: 2.5rem 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="particles"></div>
+  <div class="vinheta"></div>
+
+  <a href="index.html" class="voltar">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+      <path d="M13 8H3M7 4L3 8l4 4"/>
+    </svg>
+    voltar
+  </a>
+
+  <main>
+    <div class="opcoes">
+
+      <a href="perguntas.html" class="opcao">
+        <div class="icone">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M12 16v-4M12 8h.01"/>
+          </svg>
+        </div>
+        <div class="opcao-titulo">Perguntas<br>sobre o livro</div>
+        <div class="opcao-label">
+          Começar
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <path d="M3 8h10M9 4l4 4-4 4"/>
+          </svg>
+        </div>
+      </a>
+
+      <div class="divisor-vertical"></div>
+
+      <a href="quemsoueu.html" class="opcao">
+        <div class="icone">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+        </div>
+        <div class="opcao-titulo">Quem sou<br>eu?</div>
+        <div class="opcao-label">
+          Jogar
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <path d="M3 8h10M9 4l4 4-4 4"/>
+          </svg>
+        </div>
+      </a>
+
+    </div>
+  </main>
+
+  <script>
+    const c = document.getElementById('particles');
+    for (let i = 0; i < 30; i++) {
+      const p = document.createElement('div');
+      p.className = 'pt';
+      const s = Math.random() * 2 + 0.5;
+      p.style.cssText = `
+        width:${s}px;height:${s}px;
+        top:${Math.random()*100}vh;
+        left:-8px;
+        animation-duration:${Math.random()*18+10}s;
+        animation-delay:${Math.random()*15}s;
+      `;
+      c.appendChild(p);
+    }
+  </script>
+</body>
+</html>
