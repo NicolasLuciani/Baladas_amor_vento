@@ -239,13 +239,20 @@
 
     /* Avatar do personagem */
     .avatar {
-      width: 100px; height: 100px;
+      width: 200px; height: 200px;
       border: 1.5px solid var(--ouro);
       border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
       margin: 0 auto 1.5rem;
       background: rgba(201,162,39,0.06);
       animation: sobir 0.6s 0.2s both;
+    }
+
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
     }
 
     .avatar-inicial {
@@ -377,7 +384,7 @@
   <div id="tela-reveal">
     <div class="reveal-pre">O personagem era...</div>
     <div class="avatar">
-      <span class="avatar-inicial" id="avatar-inicial">?</span>
+      <img id="avatar-img" src="" alt="Personagem">
     </div>
     <div class="reveal-nome" id="reveal-nome">Nome</div>
     <div class="ornamento-reveal">
@@ -398,14 +405,15 @@
     // =============================================
     const personagens = [
       {
-        nome: "Personagem Teste",
-        descricao: "Personagem principal da história",
+        nome: "Nguila",
+        descricao: "Príncipe escolhido para se casar com Sarnau.",
+        imagem: "assets/nguila.png",
         dicas: [
-          "Sou uma figura central na narrativa.",
-          "Carrego um segredo que muda tudo.",
-          "Minha relação com o vento é simbólica.",
-          "Enfrento conflitos entre tradição e liberdade.",
-          "Meu nome começa com a letra P."
+          "Minha história está ligada tanto às tradições africanas quanto à influência do cristianismo.",
+          "Ocupo uma posição importante dentro da comunidade onde vivo.",
+          "Meu destino se cruza com o de Sarnau por causa de uma decisão envolvendo casamento.",
+          "Fui escolhido para me casar com Sarnau, mesmo sem ser seu grande amor.",
+          "Sou um príncipe conhecido por minha força, mas não sei ler nem escrever."
         ]
       }
     ];
@@ -478,7 +486,7 @@
       const p = personagens[personagemIdx];
       document.getElementById('reveal-nome').textContent    = p.nome;
       document.getElementById('reveal-sub').textContent     = p.descricao;
-      document.getElementById('avatar-inicial').textContent = p.nome.charAt(0);
+      document.getElementById('avatar-img').src = p.imagem;
       document.getElementById('tela-reveal').classList.add('ativa');
     });
 
