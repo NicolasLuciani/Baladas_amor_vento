@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
   <title>Perguntas · Balada de Amor ao Vento</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet" />
 
@@ -16,15 +16,15 @@
       --perg:  #e8dcc8;
       --cinza: #4a4540;
       --borda: rgba(201,162,39,0.2);
-      --verde: #2d6a4f;
       --verde-claro: rgba(45,106,79,0.15);
-      --vermelho: #7a1c1c;
       --vermelho-claro: rgba(122,28,28,0.15);
     }
 
-    html, body {
-      width: 100%; height: 100%;
-      overflow: hidden;
+    html { width: 100%; min-height: 100%; background: var(--bg); }
+
+    body {
+      width: 100%; min-height: 100vh;
+      overflow-x: hidden;
       background: var(--bg);
       font-family: 'Cormorant Garamond', serif;
       color: var(--areia);
@@ -66,101 +66,96 @@
       pointer-events: none;
     }
 
-    /* TELA */
-    .tela {
-      position: fixed; inset: 0; z-index: 3;
-      display: flex; flex-direction: column;
-      justify-content: center; align-items: center;
-      text-align: center; padding: 2rem;
-      transition: opacity 0.4s, transform 0.4s;
-      max-width: 1100px;
-      margin: 0 auto;
-    }
-
-    .tela.saindo {
-      opacity: 0;
-      transform: translateY(-20px);
-      pointer-events: none;
-    }
-
-    .tela.entrando {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-
-    /* PROGRESSO */
-    .progresso-wrap {
+    /* HEADER FIXO */
+    .header-fixo {
       position: fixed;
-      top: 2rem; left: 50%;
-      transform: translateX(-50%);
-      z-index: 5;
-      display: flex; flex-direction: column; align-items: center; gap: 0.6rem;
+      top: 0; left: 0; right: 0;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.1rem 2rem;
+      background: linear-gradient(to bottom, rgba(11,10,8,0.97) 70%, transparent);
+      gap: 1rem;
     }
 
-    .progresso-label {
-      font-family: 'IM Fell English', serif;
-      font-style: italic;
-      font-size: 0.72rem;
-      letter-spacing: 0.3em;
-      color: var(--cinza);
-    }
-
-    .progresso-barra {
-      width: 200px; height: 2px;
-      background: rgba(201,162,39,0.15);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .progresso-fill {
-      height: 100%;
-      background: var(--ouro);
-      transition: width 0.5s ease;
-    }
-
-    /* VOLTAR */
     .voltar {
-      position: fixed; top: 2rem; left: 2.5rem; z-index: 5;
       font-family: 'IM Fell English', serif; font-style: italic;
-      font-size: 0.78rem; letter-spacing: 0.2em;
+      font-size: 0.85rem; letter-spacing: 0.2em;
       color: var(--cinza); text-decoration: none;
       display: flex; align-items: center; gap: 0.5rem;
-      transition: color 0.3s;
+      transition: color 0.3s; flex-shrink: 0; white-space: nowrap;
     }
     .voltar:hover { color: var(--areia); }
     .voltar:hover svg { transform: translateX(-3px); }
     .voltar svg { transition: transform 0.3s; }
 
-    /* NÚMERO DA PERGUNTA */
+    .progresso-wrap {
+      display: flex; flex-direction: column; align-items: center; gap: 0.4rem;
+      flex: 1;
+    }
+
+    .progresso-label {
+      font-family: 'IM Fell English', serif; font-style: italic;
+      font-size: 0.8rem; letter-spacing: 0.3em;
+      color: var(--cinza); white-space: nowrap;
+    }
+
+    .progresso-barra {
+      width: 100%; max-width: 220px; height: 2px;
+      background: rgba(201,162,39,0.15); overflow: hidden;
+    }
+
+    .progresso-fill {
+      height: 100%; background: var(--ouro);
+      transition: width 0.5s ease;
+    }
+
+    /* CONTEÚDO */
+    .conteudo {
+      position: relative; z-index: 3;
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center;
+      padding: 5rem 3rem 2.5rem;
+    }
+
+    /* TELA */
+    .tela {
+      width: 100%; max-width: 1200px;
+      display: flex; flex-direction: column; align-items: center;
+      text-align: center;
+      transition: opacity 0.35s, transform 0.35s;
+    }
+
+    .tela.saindo  { opacity: 0; transform: translateY(-18px); pointer-events: none; }
+    .tela.entrando { opacity: 0; transform: translateY(18px); }
+
+    /* NÚMERO */
     .num-pergunta {
-      font-family: 'IM Fell English', serif;
-      font-style: italic;
-      font-size: 0.78rem;
-      letter-spacing: 0.4em;
-      text-transform: uppercase;
-      color: var(--ouro);
-      margin-bottom: 1.2rem;
+      font-family: 'IM Fell English', serif; font-style: italic;
+      font-size: 0.9rem; letter-spacing: 0.45em; text-transform: uppercase;
+      color: var(--ouro); margin-bottom: 1rem;
     }
 
     /* PERGUNTA */
     .texto-pergunta {
-      font-family: 'Playfair Display', serif;
-      font-weight: 700;
-      font-size: clamp(1.15rem, 2vw, 1.7rem);
-      color: var(--perg);
-      line-height: 1.35;
-      max-width: 850px;
-      margin-bottom: 2rem;
+      font-family: 'Playfair Display', serif; font-weight: 700;
+      font-size: clamp(1.4rem, 2.2vw, 2.1rem);
+      color: var(--perg); line-height: 1.38;
+      width: 100%; max-width: 1100px;
+      margin-bottom: 4rem;
+      margin-top: 80px;
     }
 
-    /* OPÇÕES */
+    /* GRID DE OPÇÕES — 2 colunas, altura generosa */
     .opcoes-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 1.5rem;
+      align-items: stretch;
+      gap: 1.25rem;
       width: 100%;
-      max-width: 950px;
-      margin: 0 auto;
+      max-width: 1200px;
+      margin-bottom: 1.25rem;
     }
 
     .opcao-btn {
@@ -168,65 +163,50 @@
       background: rgba(255,255,255,0.03);
       color: var(--areia);
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1.25rem;
-      line-height: 1.45;
-      padding: 1rem;
+      font-size: clamp(1.1rem, 1.6vw, 1.45rem);
+      line-height: 1.5;
+      padding: 1.4rem 1.6rem;
       cursor: pointer;
       text-align: left;
       transition: border-color 0.3s, background 0.3s, transform 0.2s;
-      position: relative;
-      overflow: hidden;
-
-      min-height: 120px;
-
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
+      position: relative; overflow: hidden;
+      width: 100%; height: 100%;
+      min-height: 110px;
+      display: flex; align-items: center; gap: 14px;
+      -webkit-tap-highlight-color: transparent;
     }
 
     .opcao-btn::before {
       content: '';
-      position: absolute; bottom: 0; left: 0; right: 0;
-      height: 0;
+      position: absolute; bottom: 0; left: 0; right: 0; height: 0;
       background: linear-gradient(to top, rgba(201,162,39,0.06), transparent);
       transition: height 0.3s;
     }
 
-    .opcao-btn:hover:not(:disabled) {
-      border-color: rgba(201,162,39,0.5);
-      transform: translateY(-2px);
-    }
-
+    .opcao-btn:hover:not(:disabled) { border-color: rgba(201,162,39,0.5); transform: translateY(-2px); }
     .opcao-btn:hover:not(:disabled)::before { height: 100%; }
-
     .opcao-btn:disabled { cursor: default; transform: none; }
 
-    .opcao-btn.correta {
-      border-color: #2d6a4f;
-      background: var(--verde-claro);
-      color: #6fcf97;
-    }
+    .opcao-btn.correta { border-color: #2d6a4f; background: var(--verde-claro); color: #6fcf97; }
+    .opcao-btn.errada  { border-color: #7a1c1c; background: var(--vermelho-claro); color: #eb5757; }
+    .opcao-btn.neutra  { opacity: 0.4; }
 
-    .opcao-btn.errada {
-      border-color: #7a1c1c;
-      background: var(--vermelho-claro);
-      color: #eb5757;
-    }
-
-    .opcao-btn.neutra {
-      opacity: 0.4;
+    .letra-opcao {
+      color: var(--ouro);
+      font-size: clamp(1.2rem, 1.7vw, 1.6rem);
+      font-weight: 700;
+      min-width: 30px;
+      flex-shrink: 0;
     }
 
     /* FEEDBACK */
     .feedback {
       min-height: 1.8rem;
-      font-family: 'IM Fell English', serif;
-      font-style: italic;
-      font-size: 1rem;
-      letter-spacing: 0.05em;
+      font-family: 'IM Fell English', serif; font-style: italic;
+      font-size: 1.15rem; letter-spacing: 0.06em;
       margin-bottom: 1.5rem;
-      opacity: 0;
-      transition: opacity 0.4s;
+      opacity: 0; transition: opacity 0.4s;
+      padding: 0 0.5rem; text-align: center;
     }
 
     .feedback.visivel { opacity: 1; }
@@ -235,72 +215,59 @@
 
     /* BOTÃO AVANÇAR */
     .btn-avancar {
-      display: inline-flex; align-items: center; gap: 0.8rem;
-      padding: 0.9rem 2.4rem;
-      background: var(--ouro);
-      color: #0b0a08;
+      display: inline-flex; align-items: center; gap: 0.9rem;
+      padding: 1rem 2.8rem;
+      background: var(--ouro); color: #0b0a08;
       font-family: 'Cormorant Garamond', serif;
-      font-size: 0.82rem;
-      font-weight: 700;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      border: none;
-      cursor: pointer;
+      font-size: 0.95rem; font-weight: 700;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      border: none; cursor: pointer;
       transition: transform 0.3s, box-shadow 0.3s, opacity 0.3s;
-      box-shadow: 0 8px 24px rgba(201,162,39,0.25);
-      opacity: 0;
-      pointer-events: none;
+      box-shadow: 0 6px 20px rgba(201,162,39,0.25);
+      opacity: 0; pointer-events: none;
+      -webkit-tap-highlight-color: transparent;
     }
 
-    .btn-avancar.visivel {
-      opacity: 1;
-      pointer-events: all;
-    }
-
-    .btn-avancar:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 12px 32px rgba(201,162,39,0.4);
-    }
-
+    .btn-avancar.visivel { opacity: 1; pointer-events: all; }
+    .btn-avancar:hover { transform: translateY(-3px); box-shadow: 0 10px 28px rgba(201,162,39,0.4); }
     .btn-avancar svg { transition: transform 0.3s; }
     .btn-avancar:hover svg { transform: translateX(4px); }
 
     /* TELA FINAL */
     #tela-final {
       display: none;
-      position: fixed; inset: 0; z-index: 6;
+      position: fixed; inset: 0; z-index: 20;
       flex-direction: column; justify-content: center; align-items: center;
-      text-align: center; padding: 2rem;
-      background: var(--bg);
+      text-align: center; padding: 2rem 1.25rem;
+      background: var(--bg); overflow-y: auto;
     }
 
     #tela-final.ativa { display: flex; }
 
     .final-pre {
       font-family: 'IM Fell English', serif; font-style: italic;
-      font-size: 0.78rem; letter-spacing: 0.4em; text-transform: uppercase;
-      color: var(--ouro); margin-bottom: 1rem;
+      font-size: 0.85rem; letter-spacing: 0.4em; text-transform: uppercase;
+      color: var(--ouro); margin-bottom: 0.85rem;
       animation: sobir 0.8s 0.2s both;
     }
 
     .final-titulo {
       font-family: 'Playfair Display', serif; font-weight: 900;
-      font-size: clamp(2.5rem, 5vw, 4.5rem);
-      color: var(--perg); line-height: 1;
-      margin-bottom: 0.5rem;
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      color: var(--perg); line-height: 1; margin-bottom: 0.5rem;
       animation: sobir 0.8s 0.4s both;
     }
 
     .final-pontos {
       font-family: 'Playfair Display', serif; font-style: italic;
-      font-size: clamp(1.1rem, 2vw, 1.5rem);
-      color: var(--ouro); margin-bottom: 0.8rem;
+      font-size: clamp(1.1rem, 2.5vw, 1.7rem);
+      color: var(--ouro); margin-bottom: 0.75rem;
       animation: sobir 0.8s 0.6s both;
     }
 
     .final-msg {
       font-family: 'IM Fell English', serif; font-style: italic;
-      font-size: 1rem; color: var(--cinza); margin-bottom: 2.5rem;
+      font-size: 1.1rem; color: var(--cinza); margin-bottom: 2rem;
       animation: sobir 0.8s 0.8s both;
     }
 
@@ -311,32 +278,22 @@
 
     .btn-final {
       display: inline-flex; align-items: center; gap: 0.7rem;
-      padding: 0.9rem 2rem;
+      padding: 1rem 2rem;
       font-family: 'Cormorant Garamond', serif;
-      font-size: 0.82rem; font-weight: 700;
+      font-size: 0.9rem; font-weight: 700;
       letter-spacing: 0.15em; text-transform: uppercase;
-      border: none; cursor: pointer;
-      text-decoration: none;
+      border: none; cursor: pointer; text-decoration: none;
       transition: transform 0.3s, box-shadow 0.3s;
     }
 
-    .btn-final-prim {
-      background: var(--ouro); color: #0b0a08;
-      box-shadow: 0 8px 24px rgba(201,162,39,0.25);
-    }
-
-    .btn-final-prim:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(201,162,39,0.4); }
-
-    .btn-final-sec {
-      background: transparent; color: var(--areia);
-      border: 1px solid rgba(201,162,39,0.3);
-    }
-
+    .btn-final-prim { background: var(--ouro); color: #0b0a08; box-shadow: 0 6px 20px rgba(201,162,39,0.25); }
+    .btn-final-prim:hover { transform: translateY(-3px); box-shadow: 0 10px 28px rgba(201,162,39,0.4); }
+    .btn-final-sec { background: transparent; color: var(--areia); border: 1px solid rgba(201,162,39,0.3); }
     .btn-final-sec:hover { transform: translateY(-3px); border-color: rgba(201,162,39,0.6); }
 
     .ornamento-final {
       display: flex; align-items: center; gap: 1rem;
-      margin: 1.5rem 0;
+      margin: 1.25rem 0;
       animation: sobir 0.8s 0.6s both;
     }
 
@@ -350,9 +307,23 @@
       to   { opacity: 1; transform: translateY(0); }
     }
 
+    /* RESPONSIVO */
+    @media (max-width: 900px) {
+      .conteudo { padding: 5rem 1.5rem 2rem; }
+      .opcoes-grid { gap: 1rem; }
+      .opcao-btn { font-size: 1.1rem; padding: 1.1rem 1.2rem; min-height: 90px; }
+    }
+
     @media (max-width: 600px) {
       .opcoes-grid { grid-template-columns: 1fr; }
-      .texto-pergunta { font-size: 1.3rem; }
+      .opcao-btn { min-height: 0; font-size: 1rem; }
+      .texto-pergunta { font-size: 1.2rem; }
+      .conteudo { padding: 4.5rem 1rem 2rem; }
+      .btn-avancar { width: 100%; justify-content: center; }
+    }
+
+    @media (max-width: 360px) {
+      .voltar span { display: none; }
     }
   </style>
 </head>
@@ -361,35 +332,39 @@
   <div id="particles"></div>
   <div class="vinheta"></div>
 
-  <a href="escolha.html" class="voltar">
-    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-      <path d="M13 8H3M7 4L3 8l4 4"/>
-    </svg>
-    voltar
-  </a>
-
-  <div class="progresso-wrap">
-    <div class="progresso-label" id="progresso-label">Pergunta 1 de 10</div>
-    <div class="progresso-barra">
-      <div class="progresso-fill" id="progresso-fill" style="width:10%"></div>
-    </div>
-  </div>
-
-  <!-- TELA DE PERGUNTA -->
-  <div class="tela" id="tela-pergunta">
-    <div class="num-pergunta" id="num-pergunta">Pergunta 01</div>
-    <div class="texto-pergunta" id="texto-pergunta"></div>
-    <div class="opcoes-grid" id="opcoes-grid"></div>
-    <div class="feedback" id="feedback"></div>
-    <button class="btn-avancar" id="btn-avancar">
-      Próxima
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-        <path d="M3 8h10M9 4l4 4-4 4"/>
+  <header class="header-fixo">
+    <a href="escolha.html" class="voltar">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <path d="M13 8H3M7 4L3 8l4 4"/>
       </svg>
-    </button>
-  </div>
+      <span>voltar</span>
+    </a>
 
-  <!-- TELA FINAL -->
+    <div class="progresso-wrap">
+      <div class="progresso-label" id="progresso-label">Pergunta 1 de 5</div>
+      <div class="progresso-barra">
+        <div class="progresso-fill" id="progresso-fill" style="width:20%"></div>
+      </div>
+    </div>
+
+    <div style="flex-shrink:0;width:52px;"></div>
+  </header>
+
+  <main class="conteudo">
+    <div class="tela" id="tela-pergunta">
+      <div class="num-pergunta" id="num-pergunta">Pergunta 01</div>
+      <div class="texto-pergunta" id="texto-pergunta"></div>
+      <div class="opcoes-grid" id="opcoes-grid"></div>
+      <div class="feedback" id="feedback"></div>
+      <button class="btn-avancar" id="btn-avancar">
+        Próxima
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M3 8h10M9 4l4 4-4 4"/>
+        </svg>
+      </button>
+    </div>
+  </main>
+
   <div id="tela-final">
     <div class="final-pre">Resultado final</div>
     <div class="final-titulo" id="final-titulo">Parabéns!</div>
@@ -401,28 +376,16 @@
     <div class="final-pontos" id="final-pontos"></div>
     <div class="final-msg" id="final-msg"></div>
     <div class="final-btns">
-      <button class="btn-final btn-final-prim" onclick="reiniciar()">
-        Tentar novamente
-      </button>
-      <a href="escolha.html" class="btn-final btn-final-sec">
-        Voltar ao início
-      </a>
+      <button class="btn-final btn-final-prim" onclick="reiniciar()">Tentar novamente</button>
+      <a href="escolha.html" class="btn-final btn-final-sec">Voltar ao início</a>
     </div>
   </div>
 
   <script>
-    // =============================================
-    // PERGUNTAS — troque aqui pelo conteúdo real
-    // =============================================
     const perguntas = [
       {
         texto: "Quem era o rapaz por quem Sarnau estava apaixonada?",
-        opcoes: [
-          "Nguila", 
-          "Salomão", 
-          "Rumbo", 
-          "Mwando"
-        ],
+        opcoes: ["Nguila","Salomão","Rumbo","Mwando"],
         correta: 3
       },
       {
@@ -446,121 +409,88 @@
         correta: 0
       },
       {
-        texto: "Quanto é 64 + 36?",
-        opcoes: ["90", "95", "100", "105"],
-        correta: 2
-      },
-      {
-        texto: "Quanto é 15 + 27?",
-        opcoes: ["40", "42", "44", "46"],
+        texto: "Sarnau enfrenta as duras consequências de sua gravidez fora do casamento em uma sociedade tradicional. Qual é a principal reação de sua família e da comunidade a essa situação?",
+        opcoes: [
+          "Ela é acolhida com compaixão pela família de Mwando, que assume a responsabilidade.",
+          "Ela sofre forte rejeição, humilhação pública e cobranças severas baseadas nos costumes e na honra familiar.",
+          "O caso é ignorado pela comunidade devido à interferência direta e protetora do Padre Ferreira.",
+          "Ela é exilada imediatamente para o seminário para que a criança nasça sob os cuidados da Igreja."
+        ],
         correta: 1
       },
       {
-        texto: "Quanto é 99 + 1?",
-        opcoes: ["99", "100", "101", "110"],
-        correta: 1
-      },
-      {
-        texto: "Quanto é 200 + 300?",
-        opcoes: ["400", "450", "500", "550"],
-        correta: 2
-      },
-      {
-        texto: "Quanto é 33 + 67?",
-        opcoes: ["90", "95", "100", "110"],
-        correta: 2
-      },
-      {
-        texto: "Quanto é 18 + 24?",
-        opcoes: ["38", "40", "42", "44"],
-        correta: 2
-      },
-      {
-        texto: "Quanto é 7 + 8?",
-        opcoes: ["13", "14", "15", "16"],
+        texto: "Após os eventos que o afastaram de Sarnau e do seminário, Mwando inicia uma longa jornada de deslocamento geográfico e social. Para onde ele se dirige e que tipo de realidade ele encontra?",
+        opcoes: [
+          "Ele vai para Lourenço Marques (atual Maputo) e enriquece rapidamente como comerciante aliado aos colonos.",
+          "Ele foge para as terras do regulo Nguila para tentar resgatar Sarnau e o filho de forma violenta.",
+          "Ele migra para o sul de Moçambique ou África do Sul para trabalhar nas minas (mwenye), enfrentando a exploração extrema do trabalho braçal.",
+          "Ele viaja para Portugal para concluir seus estudos teológicos com o apoio financeiro do Padre Ferreira."
+        ],
         correta: 2
       }
     ];
 
-    // =============================================
-    // LÓGICA
-    // =============================================
-    let atual = 0;
-    let pontos = 0;
-    let respondeu = false;
+    let atual = 0, pontos = 0, respondeu = false;
 
-    const elNum      = document.getElementById('num-pergunta');
-    const elTexto    = document.getElementById('texto-pergunta');
-    const elGrid     = document.getElementById('opcoes-grid');
-    const elFeedback = document.getElementById('feedback');
-    const elAvancar  = document.getElementById('btn-avancar');
-    const elProgLabel= document.getElementById('progresso-label');
-    const elProgFill = document.getElementById('progresso-fill');
-    const elTela     = document.getElementById('tela-pergunta');
+    const elNum       = document.getElementById('num-pergunta');
+    const elTexto     = document.getElementById('texto-pergunta');
+    const elGrid      = document.getElementById('opcoes-grid');
+    const elFeedback  = document.getElementById('feedback');
+    const elAvancar   = document.getElementById('btn-avancar');
+    const elProgLabel = document.getElementById('progresso-label');
+    const elProgFill  = document.getElementById('progresso-fill');
+    const elTela      = document.getElementById('tela-pergunta');
 
     function carregarPergunta() {
       respondeu = false;
       const p = perguntas[atual];
       const n = atual + 1;
 
-      // Atualiza progresso
       elProgLabel.textContent = `Pergunta ${n} de ${perguntas.length}`;
       elProgFill.style.width  = `${(n / perguntas.length) * 100}%`;
+      elNum.textContent       = `Pergunta ${String(n).padStart(2,'0')}`;
+      elTexto.textContent     = p.texto;
 
-      elNum.textContent = `Pergunta ${String(n).padStart(2,'0')}`;
-      elTexto.textContent = p.texto;
-
-      // Reseta
       elFeedback.textContent = '';
-      elFeedback.className = 'feedback';
-      elAvancar.className  = 'btn-avancar';
+      elFeedback.className   = 'feedback';
+      elAvancar.className    = 'btn-avancar';
 
-      // Monta opções
       elGrid.innerHTML = '';
+      const letras = ['A','B','C','D'];
       p.opcoes.forEach((op, i) => {
         const btn = document.createElement('button');
         btn.className = 'opcao-btn';
-        const letras = ['A', 'B', 'C', 'D'];
-
-          btn.innerHTML = `
-            <strong style="color:#c9a227;min-width:24px;">
-              ${letras[i]})
-            </strong>
-            <span>${op}</span>
-          `;
+        btn.innerHTML = `<span class="letra-opcao">${letras[i]})</span><span>${op}</span>`;
         btn.addEventListener('click', () => responder(i));
         elGrid.appendChild(btn);
       });
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function responder(idx) {
       if (respondeu) return;
       respondeu = true;
 
-      const p = perguntas[atual];
+      const p    = perguntas[atual];
       const btns = elGrid.querySelectorAll('.opcao-btn');
 
       btns.forEach((btn, i) => {
         btn.disabled = true;
-        if (i === p.correta) {
-          btn.classList.add('correta');
-        } else if (i === idx && idx !== p.correta) {
-          btn.classList.add('errada');
-        } else {
-          btn.classList.add('neutra');
-        }
+        if (i === p.correta)                     btn.classList.add('correta');
+        else if (i === idx && idx !== p.correta) btn.classList.add('errada');
+        else                                     btn.classList.add('neutra');
       });
 
       if (idx === p.correta) {
         pontos++;
         elFeedback.textContent = '✓ Correto!';
-        elFeedback.className = 'feedback visivel certo';
+        elFeedback.className   = 'feedback visivel certo';
       } else {
         elFeedback.textContent = `✗ Incorreto. A resposta era: ${p.opcoes[p.correta]}`;
-        elFeedback.className = 'feedback visivel errado';
+        elFeedback.className   = 'feedback visivel errado';
       }
 
-      // Último botão vira "Ver resultado"
       const isUltima = atual === perguntas.length - 1;
       elAvancar.innerHTML = isUltima
         ? `Ver resultado <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>`
@@ -571,19 +501,16 @@
 
     elAvancar.addEventListener('click', () => {
       if (atual < perguntas.length - 1) {
-        // Animação de troca
         elTela.classList.add('saindo');
         setTimeout(() => {
           atual++;
           carregarPergunta();
           elTela.classList.remove('saindo');
           elTela.classList.add('entrando');
-          requestAnimationFrame(() => {
-            requestAnimationFrame(() => {
-              elTela.classList.remove('entrando');
-            });
-          });
-        }, 350);
+          requestAnimationFrame(() => requestAnimationFrame(() => {
+            elTela.classList.remove('entrando');
+          }));
+        }, 320);
       } else {
         mostrarFinal();
       }
@@ -596,14 +523,13 @@
       const total = perguntas.length;
       const pct   = Math.round((pontos / total) * 100);
 
-      document.getElementById('final-pontos').textContent =
-        `${pontos} de ${total} corretas — ${pct}%`;
+      document.getElementById('final-pontos').textContent = `${pontos} de ${total} corretas — ${pct}%`;
 
       let titulo, msg;
-      if (pct === 100)      { titulo = 'Perfeito!';     msg = 'Você acertou tudo. Incrível!'; }
-      else if (pct >= 70)   { titulo = 'Muito bem!';    msg = 'Ótimo desempenho.'; }
-      else if (pct >= 50)   { titulo = 'Quase lá!';     msg = 'Dá pra melhorar um pouco mais.'; }
-      else                  { titulo = 'Continue tentando!'; msg = 'Revise o conteúdo e tente de novo.'; }
+      if (pct === 100)    { titulo = 'Perfeito!';          msg = 'Você acertou tudo. Incrível!'; }
+      else if (pct >= 70) { titulo = 'Muito bem!';         msg = 'Ótimo desempenho.'; }
+      else if (pct >= 50) { titulo = 'Quase lá!';          msg = 'Dá pra melhorar um pouco mais.'; }
+      else                { titulo = 'Continue tentando!'; msg = 'Revise o conteúdo e tente de novo.'; }
 
       document.getElementById('final-titulo').textContent = titulo;
       document.getElementById('final-msg').textContent    = msg;
@@ -616,7 +542,6 @@
       carregarPergunta();
     }
 
-    // Partículas
     const c = document.getElementById('particles');
     for (let i = 0; i < 25; i++) {
       const p = document.createElement('div');
@@ -626,7 +551,6 @@
       c.appendChild(p);
     }
 
-    // Init
     carregarPergunta();
   </script>
 </body>
