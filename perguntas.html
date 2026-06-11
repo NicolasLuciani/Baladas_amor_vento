@@ -73,6 +73,8 @@
       justify-content: center; align-items: center;
       text-align: center; padding: 2rem;
       transition: opacity 0.4s, transform 0.4s;
+      max-width: 1100px;
+      margin: 0 auto;
     }
 
     .tela.saindo {
@@ -144,21 +146,21 @@
     .texto-pergunta {
       font-family: 'Playfair Display', serif;
       font-weight: 700;
-      font-size: clamp(1.4rem, 2.8vw, 2.2rem);
+      font-size: clamp(1.15rem, 2vw, 1.7rem);
       color: var(--perg);
-      line-height: 1.25;
-      max-width: 680px;
-      margin-bottom: 2.5rem;
+      line-height: 1.35;
+      max-width: 850px;
+      margin-bottom: 2rem;
     }
 
     /* OPÇÕES */
     .opcoes-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
       width: 100%;
-      max-width: 620px;
-      margin-bottom: 2rem;
+      max-width: 950px;
+      margin: 0 auto;
     }
 
     .opcao-btn {
@@ -166,14 +168,20 @@
       background: rgba(255,255,255,0.03);
       color: var(--areia);
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1.05rem;
-      line-height: 1.4;
-      padding: 1.1rem 1.4rem;
+      font-size: 1.25rem;
+      line-height: 1.45;
+      padding: 1rem;
       cursor: pointer;
       text-align: left;
       transition: border-color 0.3s, background 0.3s, transform 0.2s;
       position: relative;
       overflow: hidden;
+
+      min-height: 120px;
+
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
     }
 
     .opcao-btn::before {
@@ -408,19 +416,34 @@
     // =============================================
     const perguntas = [
       {
-        texto: "Quanto é 12 + 8?",
-        opcoes: ["18", "20", "22", "24"],
+        texto: "Quem era o rapaz por quem Sarnau estava apaixonada?",
+        opcoes: [
+          "Nguila", 
+          "Salomão", 
+          "Rumbo", 
+          "Mwando"
+        ],
+        correta: 3
+      },
+      {
+        texto: "Qual conjunto de acontecimentos contribuiu diretamente para a expulsão de Mwando do seminário?",
+        opcoes: [
+          "A descoberta de encontros frequentes entre Mwando e Sarnau, somada às acusações feitas por Salomão diante dos demais estudantes.",
+          "A leitura, por Padre Ferreira, de uma carta escrita por Mwando para Sarnau, seguida do escândalo envolvendo Salomão e a cozinheira.",
+          "A recusa de Mwando em seguir a formação religiosa e sua decisão de abandonar espontaneamente os estudos no seminário.",
+          "O conflito entre Mwando e Salomão pela liderança entre os estudantes, que levou Padre Ferreira a puni-los igualmente."
+        ],
         correta: 1
       },
       {
-        texto: "Quanto é 35 + 47?",
-        opcoes: ["72", "82", "80", "78"],
-        correta: 1
-      },
-      {
-        texto: "Quanto é 100 + 250?",
-        opcoes: ["300", "350", "400", "450"],
-        correta: 1
+        texto: "Durante o casamento de Sarnau, qual aspecto da sociedade retratada na obra fica mais evidente?",
+        opcoes: [
+          "A influência das tradições, que exigem obediência da esposa ao marido e aceitam a poligamia.",
+          "A valorização da liberdade feminina na escolha de seu próprio destino.",
+          "A rejeição das normas familiares em favor dos costumes cristãos.",
+          "A igualdade de direitos entre homens e mulheres dentro do casamento."
+        ],
+        correta: 0
       },
       {
         texto: "Quanto é 64 + 36?",
@@ -497,7 +520,14 @@
       p.opcoes.forEach((op, i) => {
         const btn = document.createElement('button');
         btn.className = 'opcao-btn';
-        btn.textContent = op;
+        const letras = ['A', 'B', 'C', 'D'];
+
+          btn.innerHTML = `
+            <strong style="color:#c9a227;min-width:24px;">
+              ${letras[i]})
+            </strong>
+            <span>${op}</span>
+          `;
         btn.addEventListener('click', () => responder(i));
         elGrid.appendChild(btn);
       });
